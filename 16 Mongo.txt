@@ -1,0 +1,91 @@
+1. 2.)
+mongo ecommerce
+
+db.createCollection('messages')
+db.createCollection('products')
+
+db.messages.insertMany([
+  { author: 'pablo', text: 'hola' },
+  { author: 'romina', text: 'chau' },
+  { author: 'andres', text: 'hola' },
+  { author: 'ines', text: 'chau' },
+  { author: 'matias', text: 'hola' },
+  { author: 'carlos', text: 'chau' },
+  { author: 'jorge', text: 'hola' },
+  { author: 'emilio', text: 'chau' },
+  { author: 'carolina', text: 'hola' },
+  { author: 'mirta', text: 'chau' }
+])
+
+db.products.insertMany([
+  { name: 'Remera', description: 'Una remera', code: 100, photo: 'wwww.foto.com', price: 100, stock: 20 },
+  { name: 'Pantalon', description: 'Un pantalon', code: 101, photo: 'wwww.foto.com', price: 150, stock: 20 },
+  { name: 'Bermudas', description: 'Unas bermudas', code: 102, photo: 'wwww.foto.com', price: 300, stock: 20 },
+  { name: 'Ojotas', description: 'Unas ojotas', code: 103, photo: 'wwww.foto.com', price: 250, stock: 20 },
+  { name: 'Camisa', description: 'Una camisa', code: 104, photo: 'wwww.foto.com', price: 180, stock: 20 },
+  { name: 'Chaleco', description: 'Un chaleco', code: 105, photo: 'wwww.foto.com', price: 4500, stock: 20 },
+  { name: 'Zapatos', description: 'Unos Zapatos', code: 106, photo: 'wwww.foto.com', price: 1500, stock: 20 },
+  { name: 'Gorro', description: 'Un gorrito', code: 107, photo: 'wwww.foto.com', price: 2000, stock: 20 },
+  { name: 'Campera', description: 'No solo una campera, la mejor', code: 108, photo: 'wwww.foto.com', price: 3000, stock: 20 },
+  { name: 'Bufanda', description: 'Una bufanda', code: 109, photo: 'wwww.foto.com', price: 5000, stock: 20 }
+])
+
+3.)
+db.messages.find().pretty()
+db.products.find().pretty()
+
+4.)
+db.messages.count()
+db.products.count()
+
+5.)
+Create
+db.products.insertOne({ name: 'Jean', description: 'Un jean vaquero', code: 110, photo: 'www.foto.com', price: 3400, stock: 12 })
+
+Read
+db.products.find({
+    name: 'Jean'
+}).pretty()
+
+Listar los productos con precio menor a 1000 pesos
+db.products.find({price: {$lt: 1000}})
+
+Listar los productos con precio entre 1000 a 3000 pesos
+db.products.find({$and: [{price: {$gt: 1000}}, {price: {$lt: 3000}}]})
+
+Listar los productos con precio mayor a 3000 pesos
+db.products.find({price: {$gt: 3000}})
+
+Realizar una consulta que traiga sólo el nombre del tercer producto más barato.
+db.products.find({}, { name: 1, _id: 0 }).sort({price: 1}).skip(2).limit(1)
+
+Hacer una actualización sobre todos los productos, agregando el campo stock a todos ellos con un valor de 100
+db.products.updateMany({}, { $set: { stock: 100 } })
+
+Cambiar el stock a cero de los productos con precios mayores a 4000 pesos.
+db.products.updateMany({ price: { $gt: 4000 } }, { $set: { stock: 0 } })
+
+Borrar los productos con precio menor a 1000 pesos
+db.products.deleteMany({ price: { $lt: 1000 } })
+
+6.)
+mongo
+use admin
+
+db.createUser({
+  user: 'pepe',
+  pwd: 'asd456',
+  roles: [
+    { role: 'read', db: 'ecommerce'}
+  ]
+})
+
+mongod --auth
+
+mongo -u pepe -p asd456 --authenticationDatabase ecommerce
+
+
+
+db.messages.find().pretty()
+
+db.messages.insertOne({as: asd})
